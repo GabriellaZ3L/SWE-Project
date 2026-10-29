@@ -33,7 +33,7 @@ export default function AuthPage() {
       found.email= "Please a valid email address.";
     }
 
-    if (isSignUp && username.trim() === "") {
+    if (isSignup && username.trim() === "") {
       found.username = "Please enter a username.";
     } else if (isSignup && !/^[a-zA-Z0-9_]{3,20}$/.test(username)) {
       found.username = "Use 3–20 letters, numbers, or underscores.";
@@ -67,7 +67,7 @@ export default function AuthPage() {
       }
     }
     else{
-      const isError= await signUp(email.trim(), password);
+      const isError= await login(email.trim(), password);
       if(isError){
         setErrors({form: isError});
         return;
