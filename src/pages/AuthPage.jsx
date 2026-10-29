@@ -57,8 +57,13 @@ export default function AuthPage({ onLogin }) {
     setErrors(found);
     if (Object.keys(found).length > 0) return; // stop if there are errors
 
-    // TODO (Supabase): check the username and password here (log in),
-    // or create the new account (sign up). For now, any valid input logs in.
+    if(isSignup){
+      const isError= await signUp(email.trim(), password, username.trim());
+      if(isError){
+        setErrors({from: isError});
+        return;
+      }
+    }
     onLogin(username.trim());
   }
 
@@ -155,7 +160,7 @@ export default function AuthPage({ onLogin }) {
               {errors.confirm && <p className="field-error">{errors.confirm}</p>}
             </div>
           )}
-
+          {errors.from && <p className="field-error">{errors.form}</p>
           <button type="submit" className="btn auth-submit">
             {isSignup ? "Create account" : "Log in"}
           </button>
