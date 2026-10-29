@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { supabase } from "./SupabaseClient.js";
-import { logOut } from "./api.js";
+import { logout } from "./api.js";
 import Sidebar from "./components/Sidebar.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 import Announcements from "./pages/Announcements.jsx";
@@ -32,7 +32,7 @@ export default function App() {
     checkUser();
     // Checks if someone is logging in or out
     function handleChange(event, session) {
-      if (data.session) {
+      if (session) {
         setUser(session.user);
         }
       // Else, no one is logged in. Set to null.
@@ -44,7 +44,7 @@ export default function App() {
     return function() {
       checkStop.data.subscription.unsubscribe();
     };
-  }, []};
+  }, []);
       
 
   // Check or uncheck an assignment.
@@ -76,7 +76,7 @@ if (!user) {
 
   return (
     <div className="app">
-      <Sidebar page={page} onNavigate={setPage} unreadCount={unreadCount} username={user.email} onLogout={logOut} />
+      <Sidebar page={page} onNavigate={setPage} unreadCount={unreadCount} username={user.email} onLogout={logout} />
 
       <main className="main">
         {page === "dashboard" && (
