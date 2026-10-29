@@ -2,8 +2,10 @@
 import { useState } from "react";
 import "./auth.css"; // styles that only this page uses
 import {signUp} from "../api.js";
+import {login} from "../api.js";
 
-export default function AuthPage({ onLogin }) {
+
+export default function AuthPage() {
   const [mode, setMode] = useState("login"); // "login" or "signup"
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -31,7 +33,7 @@ export default function AuthPage({ onLogin }) {
       found.email= "Please a valid email address.";
     }
 
-    if (username.trim() === "") {
+    if (isSignUp && username.trim() === "") {
       found.username = "Please enter a username.";
     } else if (isSignup && !/^[a-zA-Z0-9_]{3,20}$/.test(username)) {
       found.username = "Use 3–20 letters, numbers, or underscores.";
@@ -64,7 +66,13 @@ export default function AuthPage({ onLogin }) {
         return;
       }
     }
-    onLogin(username.trim());
+    else{
+      const isError= await signUp(email.trim(), password);
+      if(isError){
+        setErrors({form: isError});
+        return;
+      }
+    }
   }
 
   return (
@@ -113,7 +121,7 @@ export default function AuthPage({ onLogin }) {
           </div>
           
           {/* Username */}
-          {/* {isSignup && ( */}
+          {isSignup && (
           <div className="field">
             <label htmlFor="username">Username</label>
             <input
@@ -126,7 +134,7 @@ export default function AuthPage({ onLogin }) {
             />
             {errors.username && <p className="field-error">{errors.username}</p>}
           </div>
-          {/* )} */}
+          )}
         
 
           {/* Password */}
