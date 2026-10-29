@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { supabase } from "./SupabaseClient.js";
-import { logout } from "./api.js";
+import { logout, getProgress } from "./api.js";
 import Sidebar from "./components/Sidebar.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 import Announcements from "./pages/Announcements.jsx";
@@ -10,8 +10,9 @@ import * as sample from "./data/sampleData.js";
 
 export default function App() {
   const [user, setUser] = useState(null); // null = not logged in
+  const [name, setName] = useState(""); // User's display name from Supabase.
   const [page, setPage] = useState("dashboard");
-  const [points, setPoints] = useState(sample.student.points);
+  const [points, setPoints] = useState(0); // Real points from Supabase. Default to 0. Loads after login.
   const [assignments, setAssignments] = useState(sample.assignments);
   const [announcements, setAnnouncements] = useState(sample.announcements);
 
@@ -45,6 +46,24 @@ export default function App() {
       checkStop.data.subscription.unsubscribe();
     };
   }, []);
+
+    // Whenever the logged-in user changes, load their name and points.
+  useEffect(() => {
+    if (!user) {
+      setName(""); // logged out: clear the name
+      setPoints(0);
+      return;
+    }
+
+    async function loadProgress() {
+      const progress = await getProgress();
+      if (!progress) return; // couldn't load (check the browser console)
+      setName(progress.name);
+      setPoints(progress.points);
+    }
+
+    loadProgress();
+  }, [user]); // run again whenever "user" changes
       
 
   // Check or uncheck an assignment.
@@ -76,12 +95,12 @@ if (!user) {
 
   return (
     <div className="app">
-      <Sidebar page={page} onNavigate={setPage} unreadCount={unreadCount} username={user.email} onLogout={logout} />
+      <Sidebar page={page} onNavigate={setPage} unreadCount={unreadCount} username={name || user.email} onLogout={logout} />
 
       <main className="main">
         {page === "dashboard" && (
           <Dashboard
-            student={{...sample.student, name: user.email}}
+            student={{...sample.student, name: name || user.email}}
             points={points}
             stages={sample.creatureStages}
             assignments={assignments}
@@ -102,7 +121,7 @@ if (!user) {
         {page === "profile" && (
           <Profile
             student={sample.student}
-            profile={sample.profile}
+            profile={{ ...sample.profile, fullName: name || user.email, email: user.email }}
             points={points}
             stages={sample.creatureStages}
             classes={sample.classes}

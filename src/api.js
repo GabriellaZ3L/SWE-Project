@@ -32,3 +32,16 @@ export async function logout(){
   await supabase.auth.signOut();
 }
 
+// Get the logged-in user's name and points from the user_progress table.
+export async function getProgress() {
+  const { data, error } = await supabase
+    .from("user_progress")
+    .select("display_name, points")
+    .single();
+
+  if (error) {
+    console.error(error);
+    return null;
+  }
+  return { name: data.display_name, points: data.points ?? 0 };
+}
