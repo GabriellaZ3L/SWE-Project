@@ -54,3 +54,22 @@ export async function updateName(userId, newName){
   }
   return null;
 }
+
+// Achievements. Check if logged in user has earned them.
+export async function getAchievements(){
+  const {data, error}= await supabase.from("user_achievements").select("*").order("level_up");
+  if(error){
+    console.error(error);
+    return [];
+  }
+  return data.map(function (a) {
+    return {
+      id: a.name,
+      icon: "★",
+      name: a.name,
+      description: a.description,
+      earned: a.earned === true,
+    };
+  });
+}
+
