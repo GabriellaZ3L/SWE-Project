@@ -9,8 +9,7 @@ export const student = {
 
 // Creature growth stages. "minPoints" = points needed to reach that stage.
 export const creatureStages = [
-  { name: "Egg", minPoints: 0 },
-  { name: "Sprout", minPoints: 100 },
+  { name: "Sprout", minPoints: 0 },
   { name: "Buddy", minPoints: 300 },
   { name: "Champion", minPoints: 600 },
 ];
