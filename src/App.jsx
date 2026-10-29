@@ -62,7 +62,7 @@ export default function App() {
       if (!progress) return; // couldn't load (check the browser console)
       setName(progress.name);
       setPoints(progress.points);
-      setRoles(progress.role);
+      setRole(progress.role);
       setAchievements(await getAchievements());
     }
 
