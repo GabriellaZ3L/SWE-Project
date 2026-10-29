@@ -27,7 +27,7 @@ function Toggle({ label, description, checked, onChange }) {
   );
 }
 
-export default function Profile({ student, profile, points, stages, classes, badges }) {
+export default function Profile({ student, profile, onRename, points, stages, classes, badges }) {
   // Notification settings. Later these could be saved to Supabase.
   const [settings, setSettings] = useState({
     reminders: true,
@@ -40,6 +40,54 @@ export default function Profile({ student, profile, points, stages, classes, bad
     setSettings({ ...settings, [name]: !settings[name] });
   }
 
+  // Edit Username on Profile Page
+  const [editing, setEditing] = useState(false); // Is the text box open?
+  const [newName, setNewName] = useState(""); // What's typed in the box.
+  const [saving, setSaving] = useState(false); // Waiting for Supabase to respond.
+  const [nameError, setNameError] = useState(""); // Error message if the name is invalid.
+
+  // Open the edit box, starting with the current name.
+  function startEditing() {
+    setNewName(profile.fullName);
+    setNameError("");
+    setEditing(true);
+  }
+
+  // Close the edit box without saving changes.
+  function cancelEditing() {
+    setEditing(false);
+    setNameError("");
+  }
+
+  // Runs when "Save" is clicked (or Enter is pressed).
+  async function saveName(event) {
+    event.preventDefault(); // Stops the browser from reloading the page when the form is submitted.
+    const trimmed = newName.trim();
+
+    // Same rule as the signup page.
+    if (!/^[a-zA-Z0-9_]{3,20}$/.test(trimmed)) {
+      setNameError("Use 3–20 letters, numbers, or underscores.");
+      return;
+    }
+
+    // If nothing is changed, close the box.
+    if (trimmed === profile.fullName) {
+      setEditing(false);
+      return;
+    }
+
+    setSaving(true);
+    const error = await onRename(trimmed); // Calls the function passed in from App.jsx.
+    setSaving(false);
+
+    if (error) {
+      setNameError(error); // Show the error message from Supabase.
+      return;
+    }
+
+    setEditing(false); // Close the box if the name was saved successfully.
+  }
+
   const earnedCount = badges.filter((b) => b.earned).length;
 
   return (
@@ -48,7 +96,35 @@ export default function Profile({ student, profile, points, stages, classes, bad
       <section className="card profile-hero">
         <div className="avatar" aria-hidden="true">{getInitials(profile.fullName)}</div>
         <div className="profile-info">
-          <h1>{profile.fullName}</h1>
+          {editing ? (
+            <form className="name-form" onSubmit={saveName} noValidate>
+              <label htmlFor="new-name" className="name-label">Username</label>
+              <div className="name-row">
+                <input
+                  id="new-name"
+                  className={nameError ? "input has-error" : "input"}
+                  value={newName}
+                  onChange={(e) => setNewName(e.target.value)}
+                  maxLength={20}
+                  autoFocus
+                />
+                <button type="submit" className="btn" disabled={saving}>
+                  {saving ? "Saving..." : "Save"}
+                </button>
+                <button type="button" className="btn-secondary" onClick={cancelEditing} disabled={saving}>
+                  Cancel
+                </button>
+              </div>
+              {nameError && <p className="field-error">{nameError}</p>}
+            </form>
+          ) : (
+            <div className="name-row">
+              <h1>{profile.fullName}</h1>
+              <button type="button" className="btn-link" onClick={startEditing}>
+                Edit
+              </button>
+            </div>
+          )}
           <p className="subtitle">{profile.major} · {profile.year}</p>
           <p className="profile-meta">
             {profile.email} · Member since {profile.memberSince}
