@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { supabase } from "./SupabaseClient.js";
-import { logout, getProgress } from "./api.js";
+import { logout, getProgress, updateName } from "./api.js";
 import Sidebar from "./components/Sidebar.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 import Announcements from "./pages/Announcements.jsx";
@@ -64,8 +64,15 @@ export default function App() {
 
     loadProgress();
   }, [user]); // run again whenever "user" changes
-      
 
+  async function rename(newName) {
+    const isError= await updateName(user.id, newName.trim());
+    if(isError) {
+      return isError;
+    }
+    setName(newName.trim());
+    return null;
+  }
   // Check or uncheck an assignment.
   // Finishing on time earns points. Unchecking takes them back.
   function toggleAssignment(id) {
@@ -122,6 +129,7 @@ if (!user) {
           <Profile
             student={sample.student}
             profile={{ ...sample.profile, fullName: name || user.email, email: user.email }}
+            onRename={rename}
             points={points}
             stages={sample.creatureStages}
             classes={sample.classes}
