@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { supabase } from "./SupabaseClient.js";
-import { logout, getProgress, updateName } from "./api.js";
+import { logout, getProgress, updateName, getAchievements } from "./api.js";
 import Sidebar from "./components/Sidebar.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 import Announcements from "./pages/Announcements.jsx";
@@ -15,6 +15,7 @@ export default function App() {
   const [points, setPoints] = useState(0); // Real points from Supabase. Default to 0. Loads after login.
   const [assignments, setAssignments] = useState(sample.assignments);
   const [announcements, setAnnouncements] = useState(sample.announcements);
+  const [achievements, setAchievements] = useState([]);
 
   // Checks whos logged in
   useEffect(function() {
@@ -60,6 +61,7 @@ export default function App() {
       if (!progress) return; // couldn't load (check the browser console)
       setName(progress.name);
       setPoints(progress.points);
+      setAchievements(await getAchievements());
     }
 
     loadProgress();
@@ -133,7 +135,7 @@ if (!user) {
             points={points}
             stages={sample.creatureStages}
             classes={sample.classes}
-            badges={sample.badges}
+            badges={achievements}
           />
         )}
       </main>
