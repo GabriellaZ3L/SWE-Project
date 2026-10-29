@@ -1,4 +1,4 @@
--- Tasks/Assignments
+-- Tasks/Assignments inital table creation
 create table public.tasks(
   id integer generated always as identity primary key,
   title text not null,
@@ -6,6 +6,7 @@ create table public.tasks(
   due_at timestamptz not null
 );
 
+-- Stores completed assignments
 create table public.completion(
   task_id integer not null references public.tasks(id) on delete cascade,
   user_id uuid not null references public.profiles(id) on delete cascade,
@@ -13,6 +14,7 @@ create table public.completion(
   primary key(task_id, user_id)
 );
 
+-- Marks assignments as complete and puts it into the complete task table
 create function public.complete_task(task_complete_id integer)
 returns integer
 language sql
