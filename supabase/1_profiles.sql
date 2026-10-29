@@ -9,6 +9,7 @@ create table profiles (
   creature text not null default 'monster'
 );
 
+-- Assigns user role
 create function public.user_role() 
 returns public.account_type
 language sql
