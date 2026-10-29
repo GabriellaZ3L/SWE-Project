@@ -1,10 +1,12 @@
 // Login and Sign up page. One form that switches between the two modes.
 import { useState } from "react";
 import "./auth.css"; // styles that only this page uses
+import {signUp} from "../api.js";
 
 export default function AuthPage({ onLogin }) {
   const [mode, setMode] = useState("login"); // "login" or "signup"
   const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -23,6 +25,11 @@ export default function AuthPage({ onLogin }) {
   // Check the inputs. Returns an object of error messages (empty = no problems).
   function validate() {
     const found = {};
+
+    // Validation for email
+    if(!email.includes("@")) {
+      found.email= "Please a valid email address.";
+    }
 
     if (username.trim() === "") {
       found.username = "Please enter a username.";
@@ -43,15 +50,20 @@ export default function AuthPage({ onLogin }) {
     return found;
   }
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault(); // stop the browser from reloading the page
 
     const found = validate();
     setErrors(found);
     if (Object.keys(found).length > 0) return; // stop if there are errors
 
-    // TODO (Supabase): check the username and password here (log in),
-    // or create the new account (sign up). For now, any valid input logs in.
+    if(isSignup){
+      const isError= await signUp(email.trim(), password, username.trim());
+      if(isError){
+        setErrors({form: isError});
+        return;
+      }
+    }
     onLogin(username.trim());
   }
 
@@ -87,6 +99,18 @@ export default function AuthPage({ onLogin }) {
         </div>
 
         <form onSubmit={handleSubmit} noValidate>
+          {/* Email */}
+           <div className="field">
+            <label htmlFor="email">Email</label>
+            <input
+              id="email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className={errors.email ? "input has-error" : "input"}
+            />
+            {errors.email && <p className="field-error">{errors.email}</p>}
+          </div>
           {/* Username */}
           <div className="field">
             <label htmlFor="username">Username</label>
@@ -136,7 +160,7 @@ export default function AuthPage({ onLogin }) {
               {errors.confirm && <p className="field-error">{errors.confirm}</p>}
             </div>
           )}
-
+          {errors.form && <p className="field-error">{errors.form}</p>}
           <button type="submit" className="btn auth-submit">
             {isSignup ? "Create account" : "Log in"}
           </button>
