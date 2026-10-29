@@ -45,3 +45,12 @@ export async function getProgress() {
   }
   return { name: data.display_name, points: data.points ?? 0 };
 }
+
+// Update user's display name in profiles table when changed
+export async function updateName(userId, newName){
+  const {error}= await supabase.from("profiles").update({display_name: newName}).eq("id", userId);
+  if(error){
+    return error.message;
+  }
+  return null;
+}
