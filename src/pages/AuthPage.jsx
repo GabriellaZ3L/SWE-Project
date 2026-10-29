@@ -50,7 +50,7 @@ export default function AuthPage({ onLogin }) {
     return found;
   }
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault(); // stop the browser from reloading the page
 
     const found = validate();
@@ -60,7 +60,7 @@ export default function AuthPage({ onLogin }) {
     if(isSignup){
       const isError= await signUp(email.trim(), password, username.trim());
       if(isError){
-        setErrors({from: isError});
+        setErrors({form: isError});
         return;
       }
     }
@@ -160,7 +160,7 @@ export default function AuthPage({ onLogin }) {
               {errors.confirm && <p className="field-error">{errors.confirm}</p>}
             </div>
           )}
-          {errors.from && <p className="field-error">{errors.form}</p>
+          {errors.form && <p className="field-error">{errors.form}</p>}
           <button type="submit" className="btn auth-submit">
             {isSignup ? "Create account" : "Log in"}
           </button>
