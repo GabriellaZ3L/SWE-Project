@@ -19,7 +19,7 @@ export async function signUp(email, password, name){
 // Login, checks for email and password
 export async function login(email, password){
   // Supabase answers with error or null
-  const {error}= await supabase.auth.signIn({email, password});
+  const {error}= await supabase.auth.signInWithPassword({email, password});
   // If Supabase returns an error, return it to user
   if (error){
     return error.message;
