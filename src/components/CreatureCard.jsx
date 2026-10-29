@@ -1,4 +1,4 @@
-import creatureImg from "../assets/creature.PNG";
+import creatureImg from "../assets/creature stage 1.png";
 
 // Shows the student's creature and how close it is to leveling up.
 

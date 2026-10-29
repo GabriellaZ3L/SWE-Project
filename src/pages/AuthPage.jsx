@@ -111,7 +111,9 @@ export default function AuthPage({ onLogin }) {
             />
             {errors.email && <p className="field-error">{errors.email}</p>}
           </div>
+          
           {/* Username */}
+          {/* {isSignup && ( */}
           <div className="field">
             <label htmlFor="username">Username</label>
             <input
@@ -124,6 +126,8 @@ export default function AuthPage({ onLogin }) {
             />
             {errors.username && <p className="field-error">{errors.username}</p>}
           </div>
+          {/* )} */}
+        
 
           {/* Password */}
           <div className="field">
