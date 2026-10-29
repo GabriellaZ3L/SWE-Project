@@ -3,7 +3,7 @@ create type public.class_role as enum ('student', 'ta');
 
 -- Profile creation 
 create table profiles (
-  id uuid primary key references auth.users (id),
+  id uuid primary key references auth.users (id) on delete cascade,
   display_name text not null check(char_length(trim(display_name)) between 1 and 25),
   role public.account_type not null default 'student' check(role in ('student', 'professor', 'ta')),
   creature text not null default 'monster'
