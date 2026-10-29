@@ -20,7 +20,7 @@ security definer
 set search_path= ''
 as $$
   insert into public.completion (task_id, user_id, points_given)
-  select id, auth.uid(), points
+  select id, auth.uid(), case when now() > due_at then 0 else points end
   from public.tasks
   where id= task_complete_id and public.user_role()= 'student'
   returning points_given;
