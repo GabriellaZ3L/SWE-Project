@@ -1,10 +1,12 @@
 // Login and Sign up page. One form that switches between the two modes.
 import { useState } from "react";
 import "./auth.css"; // styles that only this page uses
+import {signUp} from "../api.js";
 
 export default function AuthPage({ onLogin }) {
   const [mode, setMode] = useState("login"); // "login" or "signup"
   const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -23,6 +25,11 @@ export default function AuthPage({ onLogin }) {
   // Check the inputs. Returns an object of error messages (empty = no problems).
   function validate() {
     const found = {};
+
+    // Validation for email
+    if(!email.includes("@")) {
+      found.email= "Please a valid email address.";
+    }
 
     if (username.trim() === "") {
       found.username = "Please enter a username.";
@@ -87,6 +94,18 @@ export default function AuthPage({ onLogin }) {
         </div>
 
         <form onSubmit={handleSubmit} noValidate>
+          {/* Email */}
+           <div className="field">
+            <label htmlFor="email">Email</label>
+            <input
+              id="email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className={errors.email ? "input has-error" : "input"}
+            />
+            {errors.email && <p className="field-error">{errors.email}</p>}
+          </div>
           {/* Username */}
           <div className="field">
             <label htmlFor="username">Username</label>
