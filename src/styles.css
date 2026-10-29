@@ -197,9 +197,10 @@ button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); ou
     padding: 10px 16px;
     border-right: none;
     border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
   }
-  .brand { padding: 0; margin-right: auto; }
-  .nav-list { flex-direction: row; }
+  .brand { padding: 0; width: 100%; }
+  .nav-list { flex-direction: row; flex-wrap: wrap; }
   .nav-link { padding: 7px 10px; font-size: 0.85rem; }
   .nav-icon { display: none; }
   .main { padding: 20px 16px; }

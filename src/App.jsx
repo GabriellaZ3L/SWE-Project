@@ -2,6 +2,7 @@ import { useState } from "react";
 import Sidebar from "./components/Sidebar.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 import Announcements from "./pages/Announcements.jsx";
+import Profile from "./pages/Profile.jsx";
 import * as sample from "./data/sampleData.js";
 
 export default function App() {
@@ -54,6 +55,17 @@ export default function App() {
             announcements={announcements}
             onMarkRead={markRead}
             onMarkAllRead={markAllRead}
+          />
+        )}
+
+        {page === "profile" && (
+          <Profile
+            student={sample.student}
+            profile={sample.profile}
+            points={points}
+            stages={sample.creatureStages}
+            classes={sample.classes}
+            badges={sample.badges}
           />
         )}
       </main>

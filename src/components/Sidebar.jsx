@@ -2,6 +2,7 @@
 const links = [
   { id: "dashboard", label: "Dashboard", icon: "▦" },
   { id: "announcements", label: "Announcements", icon: "✉" },
+  { id: "profile", label: "Profile", icon: "◉" },
 ];
 
 export default function Sidebar({ page, onNavigate, unreadCount }) {

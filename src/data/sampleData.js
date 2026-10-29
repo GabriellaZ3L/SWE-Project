@@ -67,3 +67,33 @@ export const announcements = [
     read: true,
   },
 ];
+
+// Sample Profile Page Data
+
+export const profile = {
+  fullName: "Alex Morgan",
+  email: "alex.morgan@university.edu",
+  major: "Computer Science",
+  year: "Sophomore",
+  memberSince: "August 2026",
+  bestStreak: 7,       // longest on-time streak ever
+  onTimeRate: 92,      // percent of assignments turned in on time
+  completed: 24,       // assignments finished so far
+};
+
+export const classes = [
+  { id: 1, course: "ENC 1101", name: "Writing & Rhetoric", instructor: "Dr. Okafor", onTime: 7, total: 8 },
+  { id: 2, course: "MAC 2311", name: "Calculus I", instructor: "Prof. Rivera", onTime: 6, total: 6 },
+  { id: 3, course: "CHM 2045", name: "General Chemistry", instructor: "TA Jordan", onTime: 5, total: 6 },
+  { id: 4, course: "PSY 2012", name: "General Psychology", instructor: "Prof. Lin", onTime: 4, total: 4 },
+];
+
+// earned: true = unlocked, false = still locked (shown faded)
+export const badges = [
+  { id: 1, icon: "✓", name: "First Finish", description: "Turn in your first assignment on time", earned: true },
+  { id: 2, icon: "★", name: "On a Roll", description: "Reach a 5-assignment on-time streak", earned: true },
+  { id: 3, icon: "◷", name: "Early Bird", description: "Submit an assignment 2+ days early", earned: true },
+  { id: 4, icon: "◆", name: "Perfect Week", description: "Finish every assignment in a week on time", earned: false },
+  { id: 5, icon: "♛", name: "Champion", description: "Grow your creature to the final stage", earned: false },
+  { id: 6, icon: "∞", name: "Unstoppable", description: "Reach a 15-assignment on-time streak", earned: false },
+];
