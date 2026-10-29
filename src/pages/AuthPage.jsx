@@ -30,7 +30,7 @@ export default function AuthPage() {
 
     // Validation for email
     if(!email.includes("@")) {
-      found.email= "Please a valid email address.";
+      found.email= "Please enter a valid email address.";
     }
 
     if (isSignup && username.trim() === "") {
