@@ -135,7 +135,7 @@ if (!user) {
             points={points}
             stages={sample.creatureStages}
             classes={sample.classes}
-            achievements={achievements}
+            badges={achievements}
           />
         )}
       </main>
