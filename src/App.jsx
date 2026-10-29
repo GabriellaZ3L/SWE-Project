@@ -15,7 +15,7 @@ export default function App() {
   const [points, setPoints] = useState(0); // Real points from Supabase. Default to 0. Loads after login.
   const [assignments, setAssignments] = useState(sample.assignments);
   const [announcements, setAnnouncements] = useState(sample.announcements);
-  const [achievements, getAchievements] = useState([]);
+  const [achievements, setAchievements] = useState([]);
 
   // Checks whos logged in
   useEffect(function() {
