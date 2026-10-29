@@ -1,10 +1,11 @@
--- Achievements
+-- Stores achievements
  create table public.achievements(
   name text primary key,
   description text not null,
   level_up integer not null
  );
 
+-- The achievements that are stored
  insert into public.achievements (name, description, level_up) values
  ('First Step', 'Earn your first point', 1),
  ('Sprouting', 'Level up your creature to its first stage', 100),
@@ -22,6 +23,7 @@
  left join public.completion c on c.user_id= p.id where p.id= auth.uid()
  group by p.id;
 
+-- Achievement view
  create view public.user_achievements with (security_invoker = true) as
  select
   a.name,
