@@ -1,0 +1,103 @@
+/* Authorization Page Specific Styles */
+
+.auth-screen {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px 16px;
+  background: var(--bg);
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 400px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px;
+}
+
+.auth-brand { font-weight: 700; font-size: 1.15rem; color: var(--accent); margin-bottom: 20px; }
+.auth-card h1 { font-size: 1.4rem; }
+.auth-card .subtitle { margin-bottom: 20px; }
+
+/* Log in / Sign up Switcher */
+.auth-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 3px;
+  margin-bottom: 20px;
+}
+.auth-tab {
+  border: none;
+  background: none;
+  border-radius: 6px;
+  padding: 7px;
+  color: var(--muted);
+  font-weight: 500;
+}
+.auth-tab.active { background: var(--surface); color: var(--text); font-weight: 600; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08); }
+
+/* Form Fields */
+.field { margin-bottom: 16px; }
+.field label { display: block; font-weight: 500; font-size: 0.9rem; margin-bottom: 6px; }
+.input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+}
+.input:focus { outline: 2px solid var(--accent); outline-offset: -1px; border-color: transparent; }
+.input.has-error { border-color: var(--urgent); }
+.field-error { margin: 6px 0 0; color: var(--urgent); font-size: 0.82rem; }
+.field-hint { margin: 6px 0 0; color: var(--muted); font-size: 0.82rem; }
+
+/* Password box with a Show/Hide button inside it */
+.password-wrap { position: relative; }
+.password-wrap .input { padding-right: 64px; }
+.show-btn {
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--accent);
+  font-weight: 600;
+  font-size: 0.82rem;
+  padding: 4px 6px;
+}
+
+.auth-submit { width: 100%; padding: 11px; margin-top: 4px; }
+
+.auth-switch { margin: 20px 0 0; text-align: center; color: var(--muted); font-size: 0.9rem; }
+.auth-switch .btn-link { font-size: 0.9rem; }
+
+@media (max-width: 640px) {
+  .auth-card { padding: 24px 20px; }
+}
+
+/* Username + Log out in the sidebar */
+.sidebar-user {
+  margin-top: 24px;
+  padding: 16px 10px 0;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+.sidebar-username { font-weight: 600; font-size: 0.9rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+@media (max-width: 640px) {
+  /* Phones: name + Log out sit on the same row as "TimeQuest", links go underneath */
+  .sidebar .brand { width: auto; flex: 1; }
+  .sidebar-user { order: 2; margin: 0; padding: 0; border-top: none; }
+  .sidebar .nav-list { order: 3; width: 100%; }
+}

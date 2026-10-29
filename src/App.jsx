@@ -3,9 +3,11 @@ import Sidebar from "./components/Sidebar.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 import Announcements from "./pages/Announcements.jsx";
 import Profile from "./pages/Profile.jsx";
+import AuthPage from "./pages/AuthPage.jsx";
 import * as sample from "./data/sampleData.js";
 
 export default function App() {
+  const [user, setUser] = useState(null); // null = not logged in
   const [page, setPage] = useState("dashboard");
   const [points, setPoints] = useState(sample.student.points);
   const [assignments, setAssignments] = useState(sample.assignments);
@@ -33,14 +35,24 @@ export default function App() {
 
   const unreadCount = announcements.filter((n) => !n.read).length;
 
+  function logOut() {
+  setUser(null);
+  setPage("dashboard");
+}
+
+// Nobody logged in? Show the login page instead of the app.
+if (!user) {
+  return <AuthPage onLogin={setUser} />;
+}
+
   return (
     <div className="app">
-      <Sidebar page={page} onNavigate={setPage} unreadCount={unreadCount} />
+      <Sidebar page={page} onNavigate={setPage} unreadCount={unreadCount} username={user} onLogout={logOut} />
 
       <main className="main">
         {page === "dashboard" && (
           <Dashboard
-            student={sample.student}
+            student={{...sample.student, name: user}}
             points={points}
             stages={sample.creatureStages}
             assignments={assignments}

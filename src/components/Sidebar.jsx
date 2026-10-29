@@ -5,7 +5,7 @@ const links = [
   { id: "profile", label: "Profile", icon: "◉" },
 ];
 
-export default function Sidebar({ page, onNavigate, unreadCount }) {
+export default function Sidebar({ page, onNavigate, unreadCount, username, onLogout }) {
   return (
     <nav className="sidebar">
       <div className="brand">TimeQuest</div>
@@ -26,6 +26,11 @@ export default function Sidebar({ page, onNavigate, unreadCount }) {
           </li>
         ))}
       </ul>
+
+      <div className="sidebar-user">
+        <span className="sidebar-username">{username}</span>
+        <button className="btn-link" onClick={onLogout}>Log out</button>
+      </div>
     </nav>
   );
 }
