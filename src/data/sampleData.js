@@ -10,8 +10,8 @@ export const student = {
 // Creature growth stages. "minPoints" = points needed to reach that stage.
 export const creatureStages = [
   { name: "Sprout", minPoints: 0 },
-  { name: "Buddy", minPoints: 300 },
-  { name: "Champion", minPoints: 600 },
+  { name: "Buddy", minPoints: 50 },
+  { name: "Champion", minPoints: 120 },
 ];
 
 // dueInDays: 0 = due today, 1 = tomorrow, negative = overdue.
