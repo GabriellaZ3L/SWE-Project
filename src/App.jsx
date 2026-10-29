@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { supabase } from "./SupabaseClient.js";
+import { logOut } from "./api.js";
 import Sidebar from "./components/Sidebar.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 import Announcements from "./pages/Announcements.jsx";
@@ -12,6 +14,38 @@ export default function App() {
   const [points, setPoints] = useState(sample.student.points);
   const [assignments, setAssignments] = useState(sample.assignments);
   const [announcements, setAnnouncements] = useState(sample.announcements);
+
+  // Checks whos logged in
+  useEffect(function() {
+    // Checks if user is already logged in
+    async function checkUser(){
+      const {data}= await supabase.auth.getSession();
+      // If there is a user, pull up saved session
+      if (data.session) {
+        setUser(data.session.user);
+      }
+      // Else, no one is logged in. Set to null.
+      else {
+        setUser(null);
+      }
+    }
+    checkUser();
+    // Checks if someone is logging in or out
+    function handleChange(event, session) {
+      if (data.session) {
+        setUser(session.user);
+        }
+      // Else, no one is logged in. Set to null.
+      else {
+        setUser(null);
+        }
+      }
+    const checkStop= supabase.auth.onAuthStateChange(handleChange);
+    return function() {
+      checkStop.data.subscription.unsubscribe();
+    };
+  }, []};
+      
 
   // Check or uncheck an assignment.
   // Finishing on time earns points. Unchecking takes them back.
@@ -35,24 +69,19 @@ export default function App() {
 
   const unreadCount = announcements.filter((n) => !n.read).length;
 
-  function logOut() {
-  setUser(null);
-  setPage("dashboard");
-}
-
 // Nobody logged in? Show the login page instead of the app.
 if (!user) {
-  return <AuthPage onLogin={setUser} />;
+  return <AuthPage />;
 }
 
   return (
     <div className="app">
-      <Sidebar page={page} onNavigate={setPage} unreadCount={unreadCount} username={user} onLogout={logOut} />
+      <Sidebar page={page} onNavigate={setPage} unreadCount={unreadCount} username={user.email} onLogout={logOut} />
 
       <main className="main">
         {page === "dashboard" && (
           <Dashboard
-            student={{...sample.student, name: user}}
+            student={{...sample.student, name: user.email}}
             points={points}
             stages={sample.creatureStages}
             assignments={assignments}
